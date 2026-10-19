@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salı Günü Gidilecek Yerler</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Dancing Script for titles, Poppins for readable text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Styling & Animations */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .title-font {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Glassmorphism effect for buttons and cards */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(255, 154, 158, 0.3);
+        }
+
+        .option-btn {
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 12px 40px 0 rgba(255, 100, 120, 0.4);
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            bottom: -10vh;
+            z-index: 50;
+            user-select: none;
+            pointer-events: none;
+            animation: floatUp linear forwards;
+            filter: drop-shadow(0px 2px 4px rgba(255,0,0,0.3));
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4 relative">
+
+    <!-- Main Content Container -->
+    <div id="main-content" class="z-10 w-full max-w-3xl flex flex-col items-center justify-center text-center mt-10 mb-20">
+        
+        <!-- Header Section -->
+        <div class="mb-10">
+            <h1 class="title-font text-5xl md:text-7xl font-bold text-rose-600 drop-shadow-md mb-2">
+                Salı günü gidilecek yerler
+            </h1>
+            <h2 class="title-font text-3xl md:text-5xl text-rose-500 drop-shadow-sm">
+                gidilecek mekanlar
+            </h2>
+        </div>
+
+        <!-- Options Container -->
+        <div id="options-container" class="flex flex-col gap-5 w-full px-2">
+            
+            <button onclick="selectOption('Kahve dünyası koşuyolu(sıcak çikolata), anka lounge, kadıköy(chicken club) kadıköy(crepies)')" 
+                    class="option-btn glass-panel text-gray-800 font-medium text-lg md:text-xl py-4 px-6 rounded-2xl w-full text-left md:text-center leading-relaxed">
+                <span class="text-rose-500 font-bold mr-2">1. Seçenek:</span> 
+                Kahve dünyası koşuyolu(sıcak çikolata), anka lounge, kadıköy(chicken club) kadıköy(crepies)
+            </button>
+
+            <button onclick="selectOption('reşat balık(somon sandviç), eminönü(balık ekmek)')" 
+                    class="option-btn glass-panel text-gray-800 font-medium text-lg md:text-xl py-4 px-6 rounded-2xl w-full text-left md:text-center leading-relaxed">
+                <span class="text-rose-500 font-bold mr-2">2. Seçenek:</span> 
+                Reşat balık(somon sandviç), eminönü(balık ekmek)
+            </button>
+
+            <button onclick="selectOption('yenibosna kurucesme, yenibosna tatlıcı')" 
+                    class="option-btn glass-panel text-gray-800 font-medium text-lg md:text-xl py-4 px-6 rounded-2xl w-full text-left md:text-center leading-relaxed">
+                <span class="text-rose-500 font-bold mr-2">3. Seçenek:</span> 
+                Yenibosna kurucesme, yenibosna tatlıcı
+            </button>
+
+            <button onclick="selectOption('fatihlerin mekanı')" 
+                    class="option-btn glass-panel text-gray-800 font-medium text-lg md:text-xl py-4 px-6 rounded-2xl w-full text-left md:text-center leading-relaxed">
+                <span class="text-rose-500 font-bold mr-2">4. Seçenek:</span> 
+                Fatihlerin mekanı
+            </button>
+
+        </div>
+
+        <!-- Result Container (Hidden by default) -->
+        <div id="result-container" class="hidden flex-col items-center justify-center w-full mt-10">
+            <div class="glass-panel p-8 md:p-12 rounded-3xl border-2 border-rose-300 w-full">
+                <h3 class="title-font text-4xl md:text-6xl text-rose-600 mb-6">Harika Bir Seçim! 🎉</h3>
+                <p id="result-text" class="text-xl md:text-3xl font-medium text-gray-800 leading-relaxed">
+                    <!-- Text will be injected here via JS -->
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Background Hearts Effect Container -->
+    <div id="bg-hearts-container" class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0"></div>
+
+    <script>
+        // Array of romantic emojis
+        const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '💘', '💝'];
+        let heartInterval;
+
+        // Function triggered when an option is clicked
+        function selectOption(selectedText) {
+            // 1. Hide the options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.style.display = 'none';
+
+            // 2. Set the success text and show result container
+            const resultContainer = document.getElementById('result-container');
+            const resultText = document.getElementById('result-text');
+            
+            resultText.innerHTML = `Tebrikler <strong>"${selectedText}"</strong> seçeneğini seçtiniz. İyi eğlenceler! ❤️`;
+            
+            resultContainer.classList.remove('hidden');
+            resultContainer.classList.add('flex');
+
+            // 3. Start the heart flying animation
+            startHeartAnimation();
+        }
+
+        // Function to create a single flying heart
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Randomly select a heart emoji
+            heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            
+            // Random horizontal position (0vw to 100vw)
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            // Random animation duration (between 4s and 8s) for varied speeds
+            const duration = Math.random() * 4 + 4;
+            heart.style.animationDuration = duration + 's';
+            
+            // Random font size (1.5rem to 3.5rem)
+            heart.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+            
+            document.body.appendChild(heart);
+
+            // Remove heart from DOM after animation completes to save memory
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Function to continuously generate hearts
+        function startHeartAnimation() {
+            // Create an initial burst of hearts
+            for(let i=0; i<15; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+            
+            // Continue generating hearts smoothly
+            heartInterval = setInterval(createHeart, 200);
+        }
+
+        // Add a few static hearts in the background for initial ambiance (optional)
+        window.onload = () => {
+            const bgContainer = document.getElementById('bg-hearts-container');
+            for(let i=0; i<5; i++) {
+                const heart = document.createElement('div');
+                heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.position = 'absolute';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.fontSize = (Math.random() * 3 + 2) + 'rem';
+                heart.style.opacity = '0.1';
+                heart.style.transform = `rotate(${Math.random() * 45 - 20}deg)`;
+                bgContainer.appendChild(heart);
+            }
+        };
+    </script>
+</body>
+</html>
